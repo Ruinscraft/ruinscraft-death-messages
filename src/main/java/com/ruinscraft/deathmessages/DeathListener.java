@@ -27,7 +27,7 @@ public class DeathListener implements Listener {
             Player killer = event.getEntity().getKiller();
 
             // check for player heads integration
-            if (killer.hasPermission("group.sponsor")) {
+            if (killer.hasPermission("playerheads.canbehead")) {
                 message = adaptMessageToPlayerHeads(message);
             }
         }
