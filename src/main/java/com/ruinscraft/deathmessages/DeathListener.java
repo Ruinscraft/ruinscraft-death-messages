@@ -13,13 +13,13 @@ public class DeathListener implements Listener {
     public void onDeath(PlayerDeathEvent event) {
         String message = event.getDeathMessage();
 
-        // strip any existing color
-        message = ChatColor.stripColor(message);
-
-        // remove "using [item]"
+        // "using [item]"
         if (message.contains("using [")) {
-            int usingIndex = message.indexOf("using [");
-            message = message.substring(0, usingIndex - 1);
+            String itemPart = message.substring(message.lastIndexOf("using ["), message.length() - 1);
+            if (BadWords.badWordsFound(itemPart)) {
+                int usingIndex = message.indexOf("using [");
+                message = message.substring(0, usingIndex - 1);
+            }
         }
 
         // if the death was the result of a Player killer
@@ -27,7 +27,7 @@ public class DeathListener implements Listener {
             Player killer = event.getEntity().getKiller();
 
             // check for player heads integration
-            if (killer.hasPermission("playerheads.canbehead")) {
+            if (killer.hasPermission(DeathMessagesPlugin.CAN_BEHEAD)) {
                 message = adaptMessageToPlayerHeads(message);
             }
         }
